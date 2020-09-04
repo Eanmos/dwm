@@ -1304,8 +1304,11 @@ resizeclient(Client *c, int x, int y, int w, int h)
 
 	c->oldx = c->x; c->x = wc.x = x + gapoffset;
 	c->oldy = c->y; c->y = wc.y = y + gapoffset;
-	c->oldw = c->w; c->w = wc.width = w - gapincr;
+	c->oldw = c->w; c->w = wc.width = w - gapoffset;
 	c->oldh = c->h; c->h = wc.height = h - gapincr;
+
+	if ((c->x + c->w) >= c->mon->mw)
+		c->w = wc.width -= gapoffset;
 
 	XConfigureWindow(dpy, c->win, CWX|CWY|CWWidth|CWHeight|CWBorderWidth, &wc);
 	configure(c);
